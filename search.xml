@@ -21,9 +21,25 @@
       <link href="/2024/03/04/article-title/"/>
       <url>/2024/03/04/article-title/</url>
       
-        <content type="html"><![CDATA[<p>我的第一遍文章test</p>]]></content>
+        <content type="html"><![CDATA[<p>内容111….</p>]]></content>
       
       
+      <categories>
+          
+          <category> 分类1 </category>
+          
+          <category> 分类2 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 标签1 </tag>
+            
+            <tag> 标签2 </tag>
+            
+        </tags>
       
     </entry>
     
