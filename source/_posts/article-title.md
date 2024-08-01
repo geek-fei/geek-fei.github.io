@@ -1,7 +1,8 @@
 ---
 title: article title
 date: 2024-03-04 09:05:52
-tags:
+tags: ["标签1","标签2"]
+categories: ["分类1","分类2"]
 ---
 
-我的第一遍文章test
+内容111....

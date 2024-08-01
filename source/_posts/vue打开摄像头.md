@@ -17,7 +17,7 @@ tags:
 
 以下是一个简单的示例代码：
 
-```vue
+```html
 <template>
   <div>
     <video ref="video" autoplay></video>
@@ -126,7 +126,7 @@ const handleClose = () => {
 
 每台电脑回对应有不同的摄像头设备,获取连接多个摄像头设备，此时就得获取到所有摄像头列表，进行选择使用哪一个摄像头。
 
-```vue
+```html
 <template>
   <div>
     <video ref="video" autoplay></video>
