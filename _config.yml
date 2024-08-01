@@ -57,7 +57,7 @@ future: true
 # 代码高亮
 syntax_hingnlighter: prismjs
 highlight:
-  enable: false
+  enable: true
   line_number: true
   auto_detect: false
   tab_replace: ''
