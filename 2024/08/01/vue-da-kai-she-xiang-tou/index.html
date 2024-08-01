@@ -339,162 +339,162 @@
 <li>处理获取到的媒体流<br>一旦用户授予权限，getUserMedia() 方法会返回一个 MediaStream 对象，您可以将其与 <video> 元素关联，以显示摄像头的实时画面。</video></li>
 </ol>
 <p>以下是一个简单的示例代码：</p>
-<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
-  &lt;div&gt;
-    &lt;video ref="video" autoplay&gt;&lt;/video&gt;
-    &lt;button @click="startCamera"&gt;打开摄像头&lt;/button&gt;
-    &lt;button @click="handleClose"&gt;关闭摄像头&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>video<span class="token punctuation">"</span></span> <span class="token attr-name">autoplay</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>video</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>startCamera<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>打开摄像头<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>handleClose<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>关闭摄像头<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
  
-&lt;script setup&gt;
-import {ref} from 'vue';
-import { ElMessage } from 'element-plus';
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span>ref<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ElMessage <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'element-plus'</span><span class="token punctuation">;</span>
   
-const videoRef = ref();
-// 打开摄像头starem
-const videoStream = ref(null);
+<span class="token keyword">const</span> videoRef <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 打开摄像头starem</span>
+<span class="token keyword">const</span> videoStream <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// 判断浏览器是否支持获取摄像头
-const isCameraSupported = () =&gt; {
-  if (navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia) {
-    try {
-      navigator.mediaDevices.getUserMedia({ video: true });
-      return true;
-    } catch (err) {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
+<span class="token comment">// 判断浏览器是否支持获取摄像头</span>
+<span class="token keyword">const</span> <span class="token function-variable function">isCameraSupported</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>mediaDevices <span class="token operator">&amp;&amp;</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span>getUserMedia<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+      navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">video</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-// 打开摄像头
-const startCamera = () =&gt; {
-  // 判断浏览器是否支持获取摄像头
-  if(isCameraSupported()){
-    // 打开摄像头
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream =&gt; {
-        // 临时存储打开的摄像头starem
-        videoStream.value = stream;
-        // 将摄像头starem赋值给&lt;video&gt;进行渲染摄像头画面
-        videoRef.value.srcObject = stream;
-      })
-      .catch(error =&gt; {
-        console.error('摄像头打开错误：', error);
-      });
-  } else {
-    console.error('浏览器不支持获取摄像头');
-  }
+<span class="token comment">// 打开摄像头</span>
+<span class="token keyword">const</span> <span class="token function-variable function">startCamera</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 判断浏览器是否支持获取摄像头</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isCameraSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token comment">// 打开摄像头</span>
+    navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">video</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">stream</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 临时存储打开的摄像头starem</span>
+        videoStream<span class="token punctuation">.</span>value <span class="token operator">=</span> stream<span class="token punctuation">;</span>
+        <span class="token comment">// 将摄像头starem赋值给&lt;video&gt;进行渲染摄像头画面</span>
+        videoRef<span class="token punctuation">.</span>value<span class="token punctuation">.</span>srcObject <span class="token operator">=</span> stream<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'摄像头打开错误：'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'浏览器不支持获取摄像头'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
   
-}
+<span class="token punctuation">}</span>
 
-// 检查摄像头是否正常(判断摄像头画面是否为黑屏)
-const hasCameraFeed = (videoElement) =&gt; {
-  // 检查视频元素是否正在加载
-  if (videoElement.readyState &gt;= 3) {
-    // 获取视频的当前帧数据
-    const canvas = document.createElement('canvas');
-    canvas.width = videoElement.videoWidth;
-    canvas.height = videoElement.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+<span class="token comment">// 检查摄像头是否正常(判断摄像头画面是否为黑屏)</span>
+<span class="token keyword">const</span> <span class="token function-variable function">hasCameraFeed</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">videoElement</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 检查视频元素是否正在加载</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>videoElement<span class="token punctuation">.</span>readyState <span class="token operator">&gt;=</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 获取视频的当前帧数据</span>
+    <span class="token keyword">const</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    canvas<span class="token punctuation">.</span>width <span class="token operator">=</span> videoElement<span class="token punctuation">.</span>videoWidth<span class="token punctuation">;</span>
+    canvas<span class="token punctuation">.</span>height <span class="token operator">=</span> videoElement<span class="token punctuation">.</span>videoHeight<span class="token punctuation">;</span>
+    <span class="token keyword">const</span> ctx <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ctx<span class="token punctuation">.</span><span class="token function">drawImage</span><span class="token punctuation">(</span>videoElement<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>width<span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    // 将图像数据转换为数组
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
+    <span class="token comment">// 将图像数据转换为数组</span>
+    <span class="token keyword">const</span> imageData <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">getImageData</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>width<span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> data <span class="token operator">=</span> imageData<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
 
-    // 检查图像数据是否全为黑色（表示没有画面）
-    let allBlack = true;
-    for (let i = 0; i &lt; data.length; i += 4) {
-      if (data[i]!== 0 || data[i + 1]!== 0 || data[i + 2]!== 0) {
-        allBlack = false;
-        break;
-      }
-    }
+    <span class="token comment">// 检查图像数据是否全为黑色（表示没有画面）</span>
+    <span class="token keyword">let</span> allBlack <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> data<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">!==</span> <span class="token number">0</span> <span class="token operator">||</span> data<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">!==</span> <span class="token number">0</span> <span class="token operator">||</span> data<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">!==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        allBlack <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 
-    return !allBlack;
-  } else {
-    return false;
-  }
-}
+    <span class="token keyword">return</span> <span class="token operator">!</span>allBlack<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
   
-// 关闭调试摄像头
-const handleClose = () =&gt; {
-  // 检查摄像头临时存储的stream和画面是否为黑屏
-  if (videoStream.value &amp;&amp; hasCameraFeed()) {
-    // 关闭摄像头
-    videoStream.value.getTracks().forEach((track) =&gt; {
-      track.stop();
-    });
-    // 降临时存储的摄像头stream赋值为null
-    videoStream.value = null;
-  } else {
-    console.log('未打开摄像头');
-    // TODO 检查摄像头是否正常
-    ElMessage({
-      message: '确保摄像头画面清晰，且没有遮挡',
-      type: 'warning',
-    })
-    return;
-  }
-}
-&lt;/script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">// 关闭调试摄像头</span>
+<span class="token keyword">const</span> <span class="token function-variable function">handleClose</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 检查摄像头临时存储的stream和画面是否为黑屏</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>videoStream<span class="token punctuation">.</span>value <span class="token operator">&amp;&amp;</span> <span class="token function">hasCameraFeed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 关闭摄像头</span>
+    videoStream<span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">getTracks</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">track</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      track<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 降临时存储的摄像头stream赋值为null</span>
+    videoStream<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'未打开摄像头'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// TODO 检查摄像头是否正常</span>
+    <span class="token function">ElMessage</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">message</span><span class="token operator">:</span> <span class="token string">'确保摄像头画面清晰，且没有遮挡'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'warning'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="方式二：打开摄像头列表，选择要使用的摄像头"><a href="#方式二：打开摄像头列表，选择要使用的摄像头" class="headerlink" title="方式二：打开摄像头列表，选择要使用的摄像头"></a>方式二：打开摄像头列表，选择要使用的摄像头</h2><p>每台电脑回对应有不同的摄像头设备,获取连接多个摄像头设备，此时就得获取到所有摄像头列表，进行选择使用哪一个摄像头。</p>
-<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
-  &lt;div&gt;
-    &lt;video ref="video" autoplay&gt;&lt;/video&gt;
-    &lt;!-- 摄像头列表: 选择摄像头,根据摄像头deviceId打开对应设备的摄像头 --&gt;
-    &lt;el-select v-model='currentVideoDeviceId' @change='startCamera'&gt;
-      &lt;el-option
-        v-for="item in videoList"
-        :key="item.deviceId"
-        :label="item.label"
-        :value="item.deviceId"
-      /&gt;
-    &lt;/el-select&gt;
-    &lt;button @click="getCameraList"&gt;打开摄像头&lt;/button&gt;
-    &lt;button @click="handleClose"&gt;关闭摄像头&lt;/button&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
+<pre class="line-numbers language-markup" data-language="markup"><code class="language-markup"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>video<span class="token punctuation">"</span></span> <span class="token attr-name">autoplay</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>video</span><span class="token punctuation">&gt;</span></span>
+    <span class="token comment">&lt;!-- 摄像头列表: 选择摄像头,根据摄像头deviceId打开对应设备的摄像头 --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>el-select</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">'</span>currentVideoDeviceId<span class="token punctuation">'</span></span> <span class="token attr-name">@change</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">'</span>startCamera<span class="token punctuation">'</span></span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>el-option</span>
+        <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>item in videoList<span class="token punctuation">"</span></span>
+        <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>item.deviceId<span class="token punctuation">"</span></span>
+        <span class="token attr-name">:label</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>item.label<span class="token punctuation">"</span></span>
+        <span class="token attr-name">:value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>item.deviceId<span class="token punctuation">"</span></span>
+      <span class="token punctuation">/&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>el-select</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>getCameraList<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>打开摄像头<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>handleClose<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>关闭摄像头<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
  
-&lt;script setup&gt;
-import {ref} from 'vue';
-import { ElMessage } from 'element-plus';
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span>ref<span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ElMessage <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'element-plus'</span><span class="token punctuation">;</span>
   
-const videoRef = ref();
-// 打开摄像头starem
-const videoStream = ref(null);
-// 所有摄像头数据
-const videoList = ref([]);
-// 当前摄像头设备Id
-const currentVideoDeviceId = ref('');
+<span class="token keyword">const</span> videoRef <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 打开摄像头starem</span>
+<span class="token keyword">const</span> videoStream <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 所有摄像头数据</span>
+<span class="token keyword">const</span> videoList <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 当前摄像头设备Id</span>
+<span class="token keyword">const</span> currentVideoDeviceId <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// 判断浏览器是否支持获取摄像头
-const isCameraSupported = () =&gt; {
-  if (navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia) {
-    try {
-      navigator.mediaDevices.getUserMedia({ video: true });
-      return true;
-    } catch (err) {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
+<span class="token comment">// 判断浏览器是否支持获取摄像头</span>
+<span class="token keyword">const</span> <span class="token function-variable function">isCameraSupported</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>navigator<span class="token punctuation">.</span>mediaDevices <span class="token operator">&amp;&amp;</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span>getUserMedia<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+      navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">video</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
   
-// 获取摄像头列表
-const getCameraList = () =&gt; {
-  // 判断浏览器是否支持获取摄像头
-  if(isCameraSupported()){
-    navigator.mediaDevices.enumerateDevices()
-      .then(devices =&gt; {
-        const cameras = devices.filter(device =&gt; device.kind === 'videoinput');
-        console.log('所有摄像头',cameras);
-        /**
+<span class="token comment">// 获取摄像头列表</span>
+<span class="token keyword">const</span> <span class="token function-variable function">getCameraList</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 判断浏览器是否支持获取摄像头</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isCameraSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">enumerateDevices</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">devices</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> cameras <span class="token operator">=</span> devices<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token parameter">device</span> <span class="token operator">=&gt;</span> device<span class="token punctuation">.</span>kind <span class="token operator">===</span> <span class="token string">'videoinput'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'所有摄像头'</span><span class="token punctuation">,</span>cameras<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">/**
           所有摄像头列表数据:
           [{
             deviceId: "03ce2165757a21b4c7e31c243b0e74b2ab42cd408a542900709155a7dfa936fa",
@@ -504,93 +504,93 @@ const getCameraList = () =&gt; {
           },...]
 
           label字段为摄像头设备的名称, deviceId为摄像头设备对应的唯一值
-        */
+        */</span>
         
-        // TODO 将所有摄像头赋值给下拉选择 cameras
-        videoList.value = cameras;
+        <span class="token comment">// TODO 将所有摄像头赋值给下拉选择 cameras</span>
+        videoList<span class="token punctuation">.</span>value <span class="token operator">=</span> cameras<span class="token punctuation">;</span>
 
-        // 默认打开第一个摄像头
-        startCamera(cameras[0].deviceId);
-      })
-      .catch(error =&gt; console.error('获取摄像头列表失败:', error));
-  } else {
-    console.error('浏览器不支持获取摄像头');
-  }
+        <span class="token comment">// 默认打开第一个摄像头</span>
+        <span class="token function">startCamera</span><span class="token punctuation">(</span>cameras<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>deviceId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=&gt;</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'获取摄像头列表失败:'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'浏览器不支持获取摄像头'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
   
-}
+<span class="token punctuation">}</span>
 
-/**
+<span class="token comment">/**
   根据摄像头的 deviceId 打开对应的摄像头
-*/
-const startCamera = (deviceId) =&gt; {
-  // 获取摄像头deviceId
-  const constraints = {
-    video: { deviceId: { exact: deviceId } }
-  };
+*/</span>
+<span class="token keyword">const</span> <span class="token function-variable function">startCamera</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">deviceId</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 获取摄像头deviceId</span>
+  <span class="token keyword">const</span> constraints <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">video</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">deviceId</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token literal-property property">exact</span><span class="token operator">:</span> deviceId <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-  // 根据摄像头deviceId打开摄像头
-  navigator.mediaDevices.getUserMedia(constraints)
-      .then(stream =&gt; {
-        // 临时存储摄像有的startem
-        videoStream.value = stream;
-        // 赋值给&lt;video&gt;渲染摄像头的画面
-        videoRef.value.srcObject = stream;
-      })
-      .catch(error =&gt; {
-        console.error('摄像头打开错误：', error);
-      });
-}
+  <span class="token comment">// 根据摄像头deviceId打开摄像头</span>
+  navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span>constraints<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token parameter">stream</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 临时存储摄像有的startem</span>
+        videoStream<span class="token punctuation">.</span>value <span class="token operator">=</span> stream<span class="token punctuation">;</span>
+        <span class="token comment">// 赋值给&lt;video&gt;渲染摄像头的画面</span>
+        videoRef<span class="token punctuation">.</span>value<span class="token punctuation">.</span>srcObject <span class="token operator">=</span> stream<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span><span class="token parameter">error</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'摄像头打开错误：'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-// 检查摄像头是否正常(判断摄像头画面是否为黑屏)
-const hasCameraFeed = (videoElement) =&gt; {
-  // 检查视频元素是否正在加载
-  if (videoElement.readyState &gt;= 3) {
-    // 获取视频的当前帧数据
-    const canvas = document.createElement('canvas');
-    canvas.width = videoElement.videoWidth;
-    canvas.height = videoElement.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+<span class="token comment">// 检查摄像头是否正常(判断摄像头画面是否为黑屏)</span>
+<span class="token keyword">const</span> <span class="token function-variable function">hasCameraFeed</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">videoElement</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 检查视频元素是否正在加载</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>videoElement<span class="token punctuation">.</span>readyState <span class="token operator">&gt;=</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 获取视频的当前帧数据</span>
+    <span class="token keyword">const</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'canvas'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    canvas<span class="token punctuation">.</span>width <span class="token operator">=</span> videoElement<span class="token punctuation">.</span>videoWidth<span class="token punctuation">;</span>
+    canvas<span class="token punctuation">.</span>height <span class="token operator">=</span> videoElement<span class="token punctuation">.</span>videoHeight<span class="token punctuation">;</span>
+    <span class="token keyword">const</span> ctx <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    ctx<span class="token punctuation">.</span><span class="token function">drawImage</span><span class="token punctuation">(</span>videoElement<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>width<span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    // 将图像数据转换为数组
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
+    <span class="token comment">// 将图像数据转换为数组</span>
+    <span class="token keyword">const</span> imageData <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">getImageData</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>width<span class="token punctuation">,</span> canvas<span class="token punctuation">.</span>height<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> data <span class="token operator">=</span> imageData<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
 
-    // 检查图像数据是否全为黑色（表示没有画面）
-    let allBlack = true;
-    for (let i = 0; i &lt; data.length; i += 4) {
-      if (data[i]!== 0 || data[i + 1]!== 0 || data[i + 2]!== 0) {
-        allBlack = false;
-        break;
-      }
-    }
+    <span class="token comment">// 检查图像数据是否全为黑色（表示没有画面）</span>
+    <span class="token keyword">let</span> allBlack <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> data<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i <span class="token operator">+=</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">!==</span> <span class="token number">0</span> <span class="token operator">||</span> data<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">!==</span> <span class="token number">0</span> <span class="token operator">||</span> data<span class="token punctuation">[</span>i <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">!==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        allBlack <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 
-    return !allBlack;
-  } else {
-    return false;
-  }
-}
+    <span class="token keyword">return</span> <span class="token operator">!</span>allBlack<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
   
-// 关闭调试摄像头
-const handleClose = () =&gt; {
-  // 检查摄像头临时存储的stream和画面是否为黑屏
-  if (videoStream.value &amp;&amp; hasCameraFeed()) {
-    // 关闭摄像头
-    videoStream.value.getTracks().forEach((track) =&gt; {
-      track.stop();
-    });
-    // 降临时存储的摄像头stream赋值为null
-    videoStream.value = null;
-  } else {
-    // TODO 检查摄像头是否正常
-    ElMessage({
-      message: '确保摄像头画面清晰，且没有遮挡',
-      type: 'warning',
-    })
-    return;
-  }
-}
-&lt;/script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">// 关闭调试摄像头</span>
+<span class="token keyword">const</span> <span class="token function-variable function">handleClose</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// 检查摄像头临时存储的stream和画面是否为黑屏</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>videoStream<span class="token punctuation">.</span>value <span class="token operator">&amp;&amp;</span> <span class="token function">hasCameraFeed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 关闭摄像头</span>
+    videoStream<span class="token punctuation">.</span>value<span class="token punctuation">.</span><span class="token function">getTracks</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">track</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+      track<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 降临时存储的摄像头stream赋值为null</span>
+    videoStream<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// TODO 检查摄像头是否正常</span>
+    <span class="token function">ElMessage</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      <span class="token literal-property property">message</span><span class="token operator">:</span> <span class="token string">'确保摄像头画面清晰，且没有遮挡'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'warning'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
