@@ -395,6 +395,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
 
         
 
@@ -406,10 +409,258 @@
 <li>处理获取到的媒体流<br>一旦用户授予权限，getUserMedia() 方法会返回一个 MediaStream 对象，您可以将其与 <video> 元素关联，以显示摄像头的实时画面。</video></li>
 </ol>
 <p>以下是一个简单的示例代码：</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;video ref="video" autoplay&gt;&lt;/video&gt;</span><br><span class="line">    &lt;button @click="startCamera"&gt;打开摄像头&lt;/button&gt;</span><br><span class="line">    &lt;button @click="handleClose"&gt;关闭摄像头&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"> </span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">import {ref} from 'vue';</span><br><span class="line">import { ElMessage } from 'element-plus';</span><br><span class="line">  </span><br><span class="line">const videoRef = ref();</span><br><span class="line">// 打开摄像头starem</span><br><span class="line">const videoStream = ref(null);</span><br><span class="line"></span><br><span class="line">// 判断浏览器是否支持获取摄像头</span><br><span class="line">const isCameraSupported = () =&gt; {</span><br><span class="line">  if (navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia) {</span><br><span class="line">    try {</span><br><span class="line">      navigator.mediaDevices.getUserMedia({ video: true });</span><br><span class="line">      return true;</span><br><span class="line">    } catch (err) {</span><br><span class="line">      return false;</span><br><span class="line">    }</span><br><span class="line">  } else {</span><br><span class="line">    return false;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 打开摄像头</span><br><span class="line">const startCamera = () =&gt; {</span><br><span class="line">  // 判断浏览器是否支持获取摄像头</span><br><span class="line">  if(isCameraSupported()){</span><br><span class="line">    // 打开摄像头</span><br><span class="line">    navigator.mediaDevices.getUserMedia({ video: true })</span><br><span class="line">      .then(stream =&gt; {</span><br><span class="line">        // 临时存储打开的摄像头starem</span><br><span class="line">        videoStream.value = stream;</span><br><span class="line">        // 将摄像头starem赋值给&lt;video&gt;进行渲染摄像头画面</span><br><span class="line">        videoRef.value.srcObject = stream;</span><br><span class="line">      })</span><br><span class="line">      .catch(error =&gt; {</span><br><span class="line">        console.error('摄像头打开错误：', error);</span><br><span class="line">      });</span><br><span class="line">  } else {</span><br><span class="line">    console.error('浏览器不支持获取摄像头');</span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 检查摄像头是否正常(判断摄像头画面是否为黑屏)</span><br><span class="line">const hasCameraFeed = (videoElement) =&gt; {</span><br><span class="line">  // 检查视频元素是否正在加载</span><br><span class="line">  if (videoElement.readyState &gt;= 3) {</span><br><span class="line">    // 获取视频的当前帧数据</span><br><span class="line">    const canvas = document.createElement('canvas');</span><br><span class="line">    canvas.width = videoElement.videoWidth;</span><br><span class="line">    canvas.height = videoElement.videoHeight;</span><br><span class="line">    const ctx = canvas.getContext('2d');</span><br><span class="line">    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);</span><br><span class="line"></span><br><span class="line">    // 将图像数据转换为数组</span><br><span class="line">    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);</span><br><span class="line">    const data = imageData.data;</span><br><span class="line"></span><br><span class="line">    // 检查图像数据是否全为黑色（表示没有画面）</span><br><span class="line">    let allBlack = true;</span><br><span class="line">    for (let i = 0; i &lt; data.length; i += 4) {</span><br><span class="line">      if (data[i]!== 0 || data[i + 1]!== 0 || data[i + 2]!== 0) {</span><br><span class="line">        allBlack = false;</span><br><span class="line">        break;</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    return !allBlack;</span><br><span class="line">  } else {</span><br><span class="line">    return false;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">  </span><br><span class="line">// 关闭调试摄像头</span><br><span class="line">const handleClose = () =&gt; {</span><br><span class="line">  // 检查摄像头临时存储的stream和画面是否为黑屏</span><br><span class="line">  if (videoStream.value &amp;&amp; hasCameraFeed()) {</span><br><span class="line">    // 关闭摄像头</span><br><span class="line">    videoStream.value.getTracks().forEach((track) =&gt; {</span><br><span class="line">      track.stop();</span><br><span class="line">    });</span><br><span class="line">    // 降临时存储的摄像头stream赋值为null</span><br><span class="line">    videoStream.value = null;</span><br><span class="line">  } else {</span><br><span class="line">    console.log('未打开摄像头');</span><br><span class="line">    // TODO 检查摄像头是否正常</span><br><span class="line">    ElMessage({</span><br><span class="line">      message: '确保摄像头画面清晰，且没有遮挡',</span><br><span class="line">      type: 'warning',</span><br><span class="line">    })</span><br><span class="line">    return;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;video ref="video" autoplay&gt;&lt;/video&gt;
+    &lt;button @click="startCamera"&gt;打开摄像头&lt;/button&gt;
+    &lt;button @click="handleClose"&gt;关闭摄像头&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+ 
+&lt;script setup&gt;
+import {ref} from 'vue';
+import { ElMessage } from 'element-plus';
+  
+const videoRef = ref();
+// 打开摄像头starem
+const videoStream = ref(null);
+
+// 判断浏览器是否支持获取摄像头
+const isCameraSupported = () =&gt; {
+  if (navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia) {
+    try {
+      navigator.mediaDevices.getUserMedia({ video: true });
+      return true;
+    } catch (err) {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+// 打开摄像头
+const startCamera = () =&gt; {
+  // 判断浏览器是否支持获取摄像头
+  if(isCameraSupported()){
+    // 打开摄像头
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream =&gt; {
+        // 临时存储打开的摄像头starem
+        videoStream.value = stream;
+        // 将摄像头starem赋值给&lt;video&gt;进行渲染摄像头画面
+        videoRef.value.srcObject = stream;
+      })
+      .catch(error =&gt; {
+        console.error('摄像头打开错误：', error);
+      });
+  } else {
+    console.error('浏览器不支持获取摄像头');
+  }
+  
+}
+
+// 检查摄像头是否正常(判断摄像头画面是否为黑屏)
+const hasCameraFeed = (videoElement) =&gt; {
+  // 检查视频元素是否正在加载
+  if (videoElement.readyState &gt;= 3) {
+    // 获取视频的当前帧数据
+    const canvas = document.createElement('canvas');
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    // 将图像数据转换为数组
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    // 检查图像数据是否全为黑色（表示没有画面）
+    let allBlack = true;
+    for (let i = 0; i &lt; data.length; i += 4) {
+      if (data[i]!== 0 || data[i + 1]!== 0 || data[i + 2]!== 0) {
+        allBlack = false;
+        break;
+      }
+    }
+
+    return !allBlack;
+  } else {
+    return false;
+  }
+}
+  
+// 关闭调试摄像头
+const handleClose = () =&gt; {
+  // 检查摄像头临时存储的stream和画面是否为黑屏
+  if (videoStream.value &amp;&amp; hasCameraFeed()) {
+    // 关闭摄像头
+    videoStream.value.getTracks().forEach((track) =&gt; {
+      track.stop();
+    });
+    // 降临时存储的摄像头stream赋值为null
+    videoStream.value = null;
+  } else {
+    console.log('未打开摄像头');
+    // TODO 检查摄像头是否正常
+    ElMessage({
+      message: '确保摄像头画面清晰，且没有遮挡',
+      type: 'warning',
+    })
+    return;
+  }
+}
+&lt;/script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="方式二：打开摄像头列表，选择要使用的摄像头"><a href="#方式二：打开摄像头列表，选择要使用的摄像头" class="headerlink" title="方式二：打开摄像头列表，选择要使用的摄像头"></a>方式二：打开摄像头列表，选择要使用的摄像头</h2><p>每台电脑回对应有不同的摄像头设备,获取连接多个摄像头设备，此时就得获取到所有摄像头列表，进行选择使用哪一个摄像头。</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;video ref="video" autoplay&gt;&lt;/video&gt;</span><br><span class="line">    &lt;!-- 摄像头列表: 选择摄像头,根据摄像头deviceId打开对应设备的摄像头 --&gt;</span><br><span class="line">    &lt;el-select v-model='currentVideoDeviceId' @change='startCamera'&gt;</span><br><span class="line">      &lt;el-option</span><br><span class="line">        v-for="item in videoList"</span><br><span class="line">        :key="item.deviceId"</span><br><span class="line">        :label="item.label"</span><br><span class="line">        :value="item.deviceId"</span><br><span class="line">      /&gt;</span><br><span class="line">    &lt;/el-select&gt;</span><br><span class="line">    &lt;button @click="getCameraList"&gt;打开摄像头&lt;/button&gt;</span><br><span class="line">    &lt;button @click="handleClose"&gt;关闭摄像头&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"> </span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">import {ref} from 'vue';</span><br><span class="line">import { ElMessage } from 'element-plus';</span><br><span class="line">  </span><br><span class="line">const videoRef = ref();</span><br><span class="line">// 打开摄像头starem</span><br><span class="line">const videoStream = ref(null);</span><br><span class="line">// 所有摄像头数据</span><br><span class="line">const videoList = ref([]);</span><br><span class="line">// 当前摄像头设备Id</span><br><span class="line">const currentVideoDeviceId = ref('');</span><br><span class="line"></span><br><span class="line">// 判断浏览器是否支持获取摄像头</span><br><span class="line">const isCameraSupported = () =&gt; {</span><br><span class="line">  if (navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia) {</span><br><span class="line">    try {</span><br><span class="line">      navigator.mediaDevices.getUserMedia({ video: true });</span><br><span class="line">      return true;</span><br><span class="line">    } catch (err) {</span><br><span class="line">      return false;</span><br><span class="line">    }</span><br><span class="line">  } else {</span><br><span class="line">    return false;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">  </span><br><span class="line">// 获取摄像头列表</span><br><span class="line">const getCameraList = () =&gt; {</span><br><span class="line">  // 判断浏览器是否支持获取摄像头</span><br><span class="line">  if(isCameraSupported()){</span><br><span class="line">    navigator.mediaDevices.enumerateDevices()</span><br><span class="line">      .then(devices =&gt; {</span><br><span class="line">        const cameras = devices.filter(device =&gt; device.kind === 'videoinput');</span><br><span class="line">        console.log('所有摄像头',cameras);</span><br><span class="line">        /**</span><br><span class="line">          所有摄像头列表数据:</span><br><span class="line">          [{</span><br><span class="line">            deviceId: "03ce2165757a21b4c7e31c243b0e74b2ab42cd408a542900709155a7dfa936fa",</span><br><span class="line">            groupId: "2431f3cf786e40c3534393d63a20d35a48e38c5056a8c360bc808249ce594ed0",</span><br><span class="line">            kind: "videoinput",</span><br><span class="line">            label: "BisonCam,NB Pro (5986:9102)"</span><br><span class="line">          },...]</span><br><span class="line"></span><br><span class="line">          label字段为摄像头设备的名称, deviceId为摄像头设备对应的唯一值</span><br><span class="line">        */</span><br><span class="line">        </span><br><span class="line">        // TODO 将所有摄像头赋值给下拉选择 cameras</span><br><span class="line">        videoList.value = cameras;</span><br><span class="line"></span><br><span class="line">        // 默认打开第一个摄像头</span><br><span class="line">        startCamera(cameras[0].deviceId);</span><br><span class="line">      })</span><br><span class="line">      .catch(error =&gt; console.error('获取摄像头列表失败:', error));</span><br><span class="line">  } else {</span><br><span class="line">    console.error('浏览器不支持获取摄像头');</span><br><span class="line">  }</span><br><span class="line">  </span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">  根据摄像头的 deviceId 打开对应的摄像头</span><br><span class="line">*/</span><br><span class="line">const startCamera = (deviceId) =&gt; {</span><br><span class="line">  // 获取摄像头deviceId</span><br><span class="line">  const constraints = {</span><br><span class="line">    video: { deviceId: { exact: deviceId } }</span><br><span class="line">  };</span><br><span class="line"></span><br><span class="line">  // 根据摄像头deviceId打开摄像头</span><br><span class="line">  navigator.mediaDevices.getUserMedia(constraints)</span><br><span class="line">      .then(stream =&gt; {</span><br><span class="line">        // 临时存储摄像有的startem</span><br><span class="line">        videoStream.value = stream;</span><br><span class="line">        // 赋值给&lt;video&gt;渲染摄像头的画面</span><br><span class="line">        videoRef.value.srcObject = stream;</span><br><span class="line">      })</span><br><span class="line">      .catch(error =&gt; {</span><br><span class="line">        console.error('摄像头打开错误：', error);</span><br><span class="line">      });</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">// 检查摄像头是否正常(判断摄像头画面是否为黑屏)</span><br><span class="line">const hasCameraFeed = (videoElement) =&gt; {</span><br><span class="line">  // 检查视频元素是否正在加载</span><br><span class="line">  if (videoElement.readyState &gt;= 3) {</span><br><span class="line">    // 获取视频的当前帧数据</span><br><span class="line">    const canvas = document.createElement('canvas');</span><br><span class="line">    canvas.width = videoElement.videoWidth;</span><br><span class="line">    canvas.height = videoElement.videoHeight;</span><br><span class="line">    const ctx = canvas.getContext('2d');</span><br><span class="line">    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);</span><br><span class="line"></span><br><span class="line">    // 将图像数据转换为数组</span><br><span class="line">    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);</span><br><span class="line">    const data = imageData.data;</span><br><span class="line"></span><br><span class="line">    // 检查图像数据是否全为黑色（表示没有画面）</span><br><span class="line">    let allBlack = true;</span><br><span class="line">    for (let i = 0; i &lt; data.length; i += 4) {</span><br><span class="line">      if (data[i]!== 0 || data[i + 1]!== 0 || data[i + 2]!== 0) {</span><br><span class="line">        allBlack = false;</span><br><span class="line">        break;</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    return !allBlack;</span><br><span class="line">  } else {</span><br><span class="line">    return false;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">  </span><br><span class="line">// 关闭调试摄像头</span><br><span class="line">const handleClose = () =&gt; {</span><br><span class="line">  // 检查摄像头临时存储的stream和画面是否为黑屏</span><br><span class="line">  if (videoStream.value &amp;&amp; hasCameraFeed()) {</span><br><span class="line">    // 关闭摄像头</span><br><span class="line">    videoStream.value.getTracks().forEach((track) =&gt; {</span><br><span class="line">      track.stop();</span><br><span class="line">    });</span><br><span class="line">    // 降临时存储的摄像头stream赋值为null</span><br><span class="line">    videoStream.value = null;</span><br><span class="line">  } else {</span><br><span class="line">    // TODO 检查摄像头是否正常</span><br><span class="line">    ElMessage({</span><br><span class="line">      message: '确保摄像头画面清晰，且没有遮挡',</span><br><span class="line">      type: 'warning',</span><br><span class="line">    })</span><br><span class="line">    return;</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></tbody></table></figure>
+<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
+  &lt;div&gt;
+    &lt;video ref="video" autoplay&gt;&lt;/video&gt;
+    &lt;!-- 摄像头列表: 选择摄像头,根据摄像头deviceId打开对应设备的摄像头 --&gt;
+    &lt;el-select v-model='currentVideoDeviceId' @change='startCamera'&gt;
+      &lt;el-option
+        v-for="item in videoList"
+        :key="item.deviceId"
+        :label="item.label"
+        :value="item.deviceId"
+      /&gt;
+    &lt;/el-select&gt;
+    &lt;button @click="getCameraList"&gt;打开摄像头&lt;/button&gt;
+    &lt;button @click="handleClose"&gt;关闭摄像头&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+ 
+&lt;script setup&gt;
+import {ref} from 'vue';
+import { ElMessage } from 'element-plus';
+  
+const videoRef = ref();
+// 打开摄像头starem
+const videoStream = ref(null);
+// 所有摄像头数据
+const videoList = ref([]);
+// 当前摄像头设备Id
+const currentVideoDeviceId = ref('');
+
+// 判断浏览器是否支持获取摄像头
+const isCameraSupported = () =&gt; {
+  if (navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia) {
+    try {
+      navigator.mediaDevices.getUserMedia({ video: true });
+      return true;
+    } catch (err) {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+  
+// 获取摄像头列表
+const getCameraList = () =&gt; {
+  // 判断浏览器是否支持获取摄像头
+  if(isCameraSupported()){
+    navigator.mediaDevices.enumerateDevices()
+      .then(devices =&gt; {
+        const cameras = devices.filter(device =&gt; device.kind === 'videoinput');
+        console.log('所有摄像头',cameras);
+        /**
+          所有摄像头列表数据:
+          [{
+            deviceId: "03ce2165757a21b4c7e31c243b0e74b2ab42cd408a542900709155a7dfa936fa",
+            groupId: "2431f3cf786e40c3534393d63a20d35a48e38c5056a8c360bc808249ce594ed0",
+            kind: "videoinput",
+            label: "BisonCam,NB Pro (5986:9102)"
+          },...]
+
+          label字段为摄像头设备的名称, deviceId为摄像头设备对应的唯一值
+        */
+        
+        // TODO 将所有摄像头赋值给下拉选择 cameras
+        videoList.value = cameras;
+
+        // 默认打开第一个摄像头
+        startCamera(cameras[0].deviceId);
+      })
+      .catch(error =&gt; console.error('获取摄像头列表失败:', error));
+  } else {
+    console.error('浏览器不支持获取摄像头');
+  }
+  
+}
+
+/**
+  根据摄像头的 deviceId 打开对应的摄像头
+*/
+const startCamera = (deviceId) =&gt; {
+  // 获取摄像头deviceId
+  const constraints = {
+    video: { deviceId: { exact: deviceId } }
+  };
+
+  // 根据摄像头deviceId打开摄像头
+  navigator.mediaDevices.getUserMedia(constraints)
+      .then(stream =&gt; {
+        // 临时存储摄像有的startem
+        videoStream.value = stream;
+        // 赋值给&lt;video&gt;渲染摄像头的画面
+        videoRef.value.srcObject = stream;
+      })
+      .catch(error =&gt; {
+        console.error('摄像头打开错误：', error);
+      });
+}
+
+// 检查摄像头是否正常(判断摄像头画面是否为黑屏)
+const hasCameraFeed = (videoElement) =&gt; {
+  // 检查视频元素是否正在加载
+  if (videoElement.readyState &gt;= 3) {
+    // 获取视频的当前帧数据
+    const canvas = document.createElement('canvas');
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    // 将图像数据转换为数组
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    // 检查图像数据是否全为黑色（表示没有画面）
+    let allBlack = true;
+    for (let i = 0; i &lt; data.length; i += 4) {
+      if (data[i]!== 0 || data[i + 1]!== 0 || data[i + 2]!== 0) {
+        allBlack = false;
+        break;
+      }
+    }
+
+    return !allBlack;
+  } else {
+    return false;
+  }
+}
+  
+// 关闭调试摄像头
+const handleClose = () =&gt; {
+  // 检查摄像头临时存储的stream和画面是否为黑屏
+  if (videoStream.value &amp;&amp; hasCameraFeed()) {
+    // 关闭摄像头
+    videoStream.value.getTracks().forEach((track) =&gt; {
+      track.stop();
+    });
+    // 降临时存储的摄像头stream赋值为null
+    videoStream.value = null;
+  } else {
+    // TODO 检查摄像头是否正常
+    ElMessage({
+      message: '确保摄像头画面清晰，且没有遮挡',
+      type: 'warning',
+    })
+    return;
+  }
+}
+&lt;/script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -633,6 +884,9 @@
 <!-- 代码块功能依赖 -->
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
 
 
 <!-- 代码语言 -->
