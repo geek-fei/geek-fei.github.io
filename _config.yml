@@ -1,0 +1,150 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+# 网站标题
+title: 星尘驿站
+#网站副标题
+subtitle: '极客小飞的博客'
+# 网站描述(主要用于SEO，告诉搜索引擎一个关于您站点的简单描述，通常建议在其中包含您网站的关键词。)
+description: ''
+keywords:
+# 名字(用于主题显示文章的作者)
+author: 极客小飞
+# 网站时候用的语言
+language: zh-CN
+# 网站时区
+timezone: 'Asia/Shanghai'
+
+# URL
+## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
+# root网站根目录(例如:https://username.github.io/project)
+# url: http://example.com
+url: https://geek-fei.github.io/
+# 文章的永久链接格式(也就是你生成某个文章时的那个链接格式;例如:我新建一个文章叫temp.md，那么这个时候他自动生成的地址就是http://yoursite.com/2018/09/05/temp)
+permalink: :year/:month/:day/:title/
+# 永久链接中各部分的默认值(在这里，你需要把url改成你的网站域名)
+permalink_defaults:
+pretty_urls:
+  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
+  trailing_html: true # Set to false to remove trailing '.html' from permalinks
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link:
+  enable: true # Open external links in new tab
+  field: site # Apply to the whole site
+  exclude: ''
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+
+# 代码高亮
+syntax_hingnlighter: prismjs
+highlight:
+  enable: false
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+prismjs:
+  enable: true
+  preprocess: true
+  line_number: true
+  tab_replace: ''
+
+# Home page setting
+# path: Root path for your blogs index page. (default = '')
+# per_page: Posts displayed per page. (0 = disable pagination)
+# order_by: Posts order. (Order by date descending by default)
+index_generator:
+  path: ''
+  per_page: 12
+  order_by: -date
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Metadata elements
+## https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+meta_generator: true
+
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+## updated_option supports 'mtime', 'date', 'empty'
+updated_option: 'mtime'
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 10
+pagination_dir: page
+
+# Include / Exclude file(s)
+## include:/exclude: options only apply to the 'source/' folder
+include:
+exclude:
+ignore:
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+# 选择什么主题，也就是在themes这个文件夹下(默认: lanscape主题)
+theme: hexo-theme-matery
+
+# Deployment
+## Docs: https://hexo.io/docs/one-command-deployment
+
+# 配置个人github地址
+deploy:
+  type: git
+  repository: https://github.com/geek-fei/geek-fei.github.io.git
+  branch: master
+
+# 文章搜索 需安装 npm install hexo-generator-search --save
+search:
+  path: search.xml
+  field: post
+
+# 文字统计 需安装 npm i --save hexo-wordcount
+postInfo:
+  date: true
+  update: false
+  wordCount: true # 设置文章字数统计为 true.
+  totalCount: true # 设置站点文章总字数统计为 true.
+  min2read: true # 阅读时长.
+  readCount: true # 阅读次数.
+
+# 添加表情符支持 需安装 npm install hexo-filter-github-emojis --save
+githubEmojis:
+  enable: true
+  className: github-emoji
+  inject: true
+  styles:
+  customEmojis:
+
+# 中文链接转拼音 需安装 npm i hexo-permalink-pinyin --save
+permalink_pinyin:
+  enable: true
+  separator: '-' # default: '-'
