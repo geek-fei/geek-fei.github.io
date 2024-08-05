@@ -1184,6 +1184,13 @@ hexo-i18n@^1.0.0:
   dependencies:
     sprintf-js "^1.0.3"
 
+hexo-lazyload-image@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmmirror.com/hexo-lazyload-image/-/hexo-lazyload-image-1.1.2.tgz"
+  integrity sha512-g1oHnXwQG3Rf02WwaosEvVF/xqX4VE7FT8nXNVZJ0n20Cv12OmYP1OKbMp4IMbnBaHyuPvv4E48X5LU5UZWmTg==
+  dependencies:
+    uglify-js "^3.17.4"
+
 hexo-log@^3.0.0, hexo-log@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmmirror.com/hexo-log/-/hexo-log-3.2.0.tgz"
@@ -2736,6 +2743,11 @@ ua-parser-js@^0.7.30:
   version "0.7.38"
   resolved "https://registry.npmmirror.com/ua-parser-js/-/ua-parser-js-0.7.38.tgz"
   integrity sha512-fYmIy7fKTSFAhG3fuPlubeGaMoAd6r0rSnfEsO5nEY55i26KSLt9EH7PLQiiqPUhNqYIJvSkTy1oArIcXAbPbA==
+
+uglify-js@^3.17.4:
+  version "3.19.1"
+  resolved "https://registry.npmmirror.com/uglify-js/-/uglify-js-3.19.1.tgz"
+  integrity sha512-y/2wiW+ceTYR2TSSptAhfnEtpLaQ4Ups5zrjB2d3kuVxHj16j/QJwPl5PvuGy9uARb39J0+iKxcRPvtpsx4A4A==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"
