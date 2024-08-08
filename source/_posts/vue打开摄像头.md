@@ -11,7 +11,7 @@ tags:
 1. 获取用户权限
    可以使用 navigator.mediaDevices.getUserMedia() 方法来请求权限。
 2. 处理获取到的媒体流
-   一旦用户授予权限，getUserMedia() 方法会返回一个 MediaStream 对象，您可以将其与 <video> 元素关联，以显示摄像头的实时画面。
+   一旦用户授予权限，getUserMedia() 方法会返回一个 MediaStream 对象，您可以将其与 `<video>` 元素关联，以显示摄像头的实时画面。
 
 
 
